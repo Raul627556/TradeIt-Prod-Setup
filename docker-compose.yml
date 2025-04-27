@@ -17,11 +17,11 @@ services:
 
   backend:
     build:
-      context: ../TradeIt-backend
+      context: ../TradeItBackend
       dockerfile: ../TradeItBackend/Dockerfile
     container_name: backend
     volumes:
-      - ../TradeIt-backend:/app
+      - ../TradeItBackend:/app
     environment:
       - MONGO_URI=mongodb://mongo:27017/TradeIt
       - PORT=9001
