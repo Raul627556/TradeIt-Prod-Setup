@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/prod:/etc/nginx/conf.d
+      - ./certs:/etc/nginx/certs
+    depends_on:
+      - backend
+    networks:
+      - tradeit_network
+
+  backend:
+    build:
+      context: ../TradeIt-backend
+      dockerfile: ../DockersReact-Node/TradeItBackend/Dockerfile
+    container_name: backend
+    volumes:
+      - ../TradeIt-backend:/app
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/TradeIt
+    expose:
+      - "9001"
+    networks:
+      tradeit_network:
+        ipv4_address: 10.18.0.3
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      tradeit_network:
+        ipv4_address: 10.18.0.4
+
+volumes:
+  mongo-data:
+
+networks:
+  tradeit_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.18.0.0/16
