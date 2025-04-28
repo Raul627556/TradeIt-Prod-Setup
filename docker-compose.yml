@@ -18,7 +18,7 @@ services:
   backend:
     build:
       context: ../TradeItBackend
-      dockerfile: ../TradeItBackend/Dockerfile
+      dockerfile: ./TradeItBackend/Dockerfile
     container_name: backend
     volumes:
       - ../TradeItBackend:/app
